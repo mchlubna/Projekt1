@@ -12,7 +12,7 @@ topographic feature that rises sharply
 some 1000 feet above Twin Creek Valley
 to an elevation of more than 7500 feet
 above sea level. The butte is located just
-north of US 30N and the Union Pacific Railroad,
+north of US 30 and the Union Pacific Railroad,
 which traverse the valley. ''',
 '''At the base of Fossil Butte are the bright
 red, purple, yellow and gray beds of the Wasatch
@@ -36,9 +36,7 @@ garpike and stingray are also present.'''
 users_pwd = {"bob":"123","ann":"pass123","mike":"password123","liz":"pass123",}
 
 #rozdeleni textu
-prvni_text = TEXTS[0]
-druhy_text = TEXTS[1]
-treti_text = TEXTS[2]
+count_texts = len(TEXTS)
 
 #definice oddelovace pro print
 oddelovac = "-" * 60
@@ -47,26 +45,22 @@ oddelovac = "-" * 60
 jmeno = input("Zadej jmeno: ")
 pwd = input("Zadej password: ") 
 
+
+
 #overeni uzivatele
 if jmeno in users_pwd.keys() and pwd == users_pwd.get(jmeno, pwd):
-    print(oddelovac,f"Welcome to the app, {jmeno}","We have 3 texts to be analyzed.",oddelovac,sep = "\n")
+    print(oddelovac,f"Welcome to the app, {jmeno}",f"We have {count_texts} texts to be analyzed.",oddelovac,sep = "\n")
     
     #vyber textu pro anylyzu
-    text_choice = input("Enter a number btw. 1 and 3 to select: ")
+    text_choice = input(f"Enter a number btw. 1 and {count_texts} to select: ")
     print(oddelovac)
-  
-    if text_choice in ("1","2","3"):
-     #nastaveni textu pro analyzu
-        if text_choice == "1":
-         text_to_analyze = prvni_text
-        elif text_choice == "2":
-         text_to_analyze = druhy_text
-        elif text_choice =="3":
-         text_to_analyze = treti_text
-    
+    if int(text_choice) <= count_texts:
+        #nastaveni textu pro analyzu
+        text_to_analyze = TEXTS[int(text_choice)-1]
+        
         #definice promennych
         text_slova = []
-        vyskyt = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0}
+        vyskyt = {}
         zacatek_velke_pismeno = 0
         vse_velke = 0
         vse_male = 0
@@ -87,39 +81,23 @@ if jmeno in users_pwd.keys() and pwd == users_pwd.get(jmeno, pwd):
         #analyza slov
         for slovo in text_slova:
             #print(slovo[0])
-            if slovo[0].isupper():
+            if slovo[0].isupper() and not slovo.isupper():
                 zacatek_velke_pismeno = zacatek_velke_pismeno + 1
             if slovo.islower():
                 vse_male = vse_male + 1
-            if slovo.isupper() and not any(char.isdigit() for char in slovo):
+            if slovo.isupper():
                 vse_velke = vse_velke + 1
             if slovo.isdigit():
                 cisla_pocet = cisla_pocet + 1
                 cisla_sum = cisla_sum + int(slovo)
-            if len(slovo) == 1:
-                vyskyt[1] = vyskyt[1]+1
-            elif len(slovo) == 2:
-                vyskyt[2] = vyskyt[2]+1
-            elif len(slovo) == 3:
-                vyskyt[3] = vyskyt[3]+1
-            elif len(slovo) == 4:
-                vyskyt[4] = vyskyt[4]+1  
-            elif len(slovo) == 5:
-                vyskyt[5] = vyskyt[5]+1 
-            elif len(slovo) == 6:
-                vyskyt[6] = vyskyt[6]+1
-            elif len(slovo) == 7:
-                vyskyt[7] = vyskyt[7]+1
-            elif len(slovo) == 8:
-                vyskyt[8] = vyskyt[8]+1
-            elif len(slovo) == 9:
-                vyskyt[9] = vyskyt[9]+1  
-            elif len(slovo) == 10:
-                vyskyt[10] = vyskyt[10]+1
-            elif len(slovo) == 11:
-                vyskyt[11] = vyskyt[11]+1            
-                          
-        print(vyskyt)
+            if len(slovo) in vyskyt.keys():
+                vyskyt[len(slovo)] = vyskyt[len(slovo)]+1
+            else:
+                 vyskyt[len(slovo)] = 1
+        
+        #seřazení vytvoreneho slovniku podle klicu      
+        vyskyt = dict(sorted(vyskyt.items()))  
+
         #print vystupu
         print(f"There are {len(text_slova)} words in the selected text.")
         print(f"There are {zacatek_velke_pismeno} titlecase words.")
@@ -134,13 +112,8 @@ if jmeno in users_pwd.keys() and pwd == users_pwd.get(jmeno, pwd):
         for delka, vyskyty in vyskyt.items():
             print(str(delka).rjust(3),"|","*" * vyskyty,"|".rjust(maximalni_vyskyt-vyskyty+4), vyskyty, sep = "")
 
-    #vybrany text jiny nez v nabidce
+        #vybrany text jiny nez v nabidce
     else: print("Vyber neni k dispozici")
-#user name doesn't exist or wrong pwd
+#user name doesn't exist or pwd is wrong
 else:
     print(f"User name {jmeno} doesn't exist or {pwd} is wrong password")
-
-
-
-
-

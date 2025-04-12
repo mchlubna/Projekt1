@@ -54,7 +54,7 @@ if jmeno in users_pwd.keys() and pwd == users_pwd.get(jmeno, pwd):
     #vyber textu pro anylyzu
     text_choice = input(f"Enter a number btw. 1 and {count_texts} to select: ")
     print(oddelovac)
-    if int(text_choice) <= count_texts:
+    if int(text_choice) <= count_texts and int(text_choice) > 0:
         #nastaveni textu pro analyzu
         text_to_analyze = TEXTS[int(text_choice)-1]
         
@@ -113,7 +113,7 @@ if jmeno in users_pwd.keys() and pwd == users_pwd.get(jmeno, pwd):
             print(str(delka).rjust(3),"|","*" * vyskyty,"|".rjust(maximalni_vyskyt-vyskyty+4), vyskyty, sep = "")
 
         #vybrany text jiny nez v nabidce
-    else: print("Vyber neni k dispozici")
+    else: print(f"Vyber {text_choice} neni k dispozici")
 #user name doesn't exist or pwd is wrong
 else:
     print(f"User name {jmeno} doesn't exist or {pwd} is wrong password")
